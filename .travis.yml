@@ -19,6 +19,10 @@ matrix:
         target_branch: gh-pages  # branch contains blog content
         on:
           branch: master  # branch contains Hugo generator code  
+      notifications:
+        slack:
+          rooms:
+            - zomzog:IfP40byf0hVXYeI422owknTy#general
     - language: java
       before_script:
         - cd example
