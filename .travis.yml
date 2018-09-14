@@ -6,7 +6,7 @@ matrix:
       before_script:
         - npm install -g gulp-cli
         - cd slides
-      script: yarn install && gulp && ls build && ls build/dist
+      script: yarn install && gulp
       deploy:
         provider: pages
         skip-cleanup: true
@@ -15,7 +15,7 @@ matrix:
         name: $GITHUB_USERNAME
         verbose: true
         keep-history: true
-        local-dir: build
+        local-dir: slides/build/dist
         target_branch: gh-pages  # branch contains blog content
         on:
           branch: master  # branch contains Hugo generator code  
