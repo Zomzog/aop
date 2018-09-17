@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bzh.zomzog.prez</groupId>
-    <artifactId>aop</artifactId>
+    <artifactId>aspectj-java5</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -14,12 +14,6 @@
         <assertj>3.11.1</assertj>
         <junit>5.3.1</junit>
     </properties>
-
-<modules>
-<module>aspectj</module>
-<module>aspectj-java5</module>
-<module>spring-aop</module>
-</modules>
 
     <dependencies>
         <dependency>

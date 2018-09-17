@@ -5,7 +5,7 @@
 :revealjs_progress: true
 :revealjs_slideNumber: true
 :revealjs_history: true
-:revealjs_customtheme: css/dm_league.css
+:revealjs_customtheme: css/style.css
 :revealjs_showNotes: true
 
 == Wikipedia
@@ -39,6 +39,174 @@ Actually things aren't that bad
 --
 And we will see AspectJ
 --
+== Aspect class
+[source, java]
+----
+    public aspect MyAspect { }
+----
+== Pointcut
+[source, java]
+----
+    execution(void Point.setX(int)) // method body executed
+----
+[source, java]
+----
+    call(void Point.setX(int))  // method is called
+----
+[source, java]
+----
+    handler(ArrayOutOfBoundsException)  // exception handler
+----
+[source, java]
+----
+    within(MyClass)  // executing code belongs to class MyClass
+----
+[source, java]
+----
+    this, target, cflow, setter...
+----
+
+== Advice
+* *before* executed before the Pointcut
+* *after* executed after the Pointcut
+* *around* that allow to surround the execution
+
+== Demo .aj
+
+[%notitle]
+=== 0
+[source, xml, numbered]
+----
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>aspectj-maven-plugin</artifactId>
+    <version>${aspectj-plugin}</version>
+</plugin>
+----
+[%notitle]
+=== 1
+[source, java, numbered]
+----
+// Pony.java
+package bzh.zomzog.prez.aop;
+
+public class Pony {
+    private int distance = 0;
+
+    public boolean makeItWalk(int distance){
+        this.distance += distance;
+        return true;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}
+----
+[%notitle]
+=== 2
+[source, java, numbered]
+----
+// Pony.java
+package bzh.zomzog.prez.aop;
+
+public class Pony {
+    private int distance = 0;
+
+    public boolean makeItWalk(int distance){
+        this.distance += distance;
+        return true;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}
+----
+[%notitle]
+=== 3
+[source, java, numbered]
+----
+// PonyAspect.aj
+package bzh.zomzog.prez.aop;
+
+public aspect PonyAspect {
+
+    pointcut callMakeItWalk(int distance, Pony pony) :
+            call(boolean Pony.makeItWalk(int)) 
+            && args(distance) 
+            && target(pony);
+}
+----
+[%notitle]
+=== 4
+[source, java, numbered]
+----
+before(int distance, Pony pony) : callMakeItWalk(distance, pony) {
+    if (distance > 10) {
+        throw new RuntimeException("Too long for a pony");
+    }
+}
+
+after(int distance, Pony pony) : callMakeItWalk(distance, pony) {
+    System.out.println("After " + pony);
+}
+----
+[%notitle]
+=== 5
+[source, java, numbered]
+----
+boolean around(int distance, Pony pony) 
+        : callMakeItWalk(distance, pony) {
+    long startTime = System.nanoTime();
+    boolean result = proceed(distance, pony);
+    long endTime = System.nanoTime();
+    System.out.println("Duration : " + (endTime-startTime));
+    return result;
+}
+----
+
+== AspectJ with *java 5*
+[source, java]
+----
+    @Aspect 
+    public class MyAspect { }
+----
+== Pointcut with *java 5*
+[source, java]
+----
+    @Pointcut("execution( ... )")
+    public void myExecutionPointcut() { }
+----
+[source, java]
+----
+    @Pointcut("@within( AnotherAnnotation )")
+    public void myWithinAnnotationPointcut() { }
+----
+
+== Advice with *java 5*
+[source, java]
+----
+    @Before("myExecutionPointcut()")
+----
+[source, java]
+----
+    @After("myWithinAnnotationPointcut()")
+----
+[source, java]
+----
+    @Around("execution( ... )")
+----
 
 == Slide Two
 
