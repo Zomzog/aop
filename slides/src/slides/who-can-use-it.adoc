@@ -1,4 +1,4 @@
-== Who can use it ? Nearly eveybody
+== Who can use it ? Nearly everybody
 
 [%step]
 * AspectJ (Java)

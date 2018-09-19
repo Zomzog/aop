@@ -1,5 +1,5 @@
 == Wikipedia
 
-Aspect-oriented programming is a programming paradigm that aims to *increase modularity* by alowing the separation of *cross-cutting concerns*.
+Aspect-oriented programming is a programming paradigm that aims to *increase modularity* by allowing the separation of *cross-cutting concerns*.
 
 It does so by adding additional behavior to existing code *without modifying the code* itself.

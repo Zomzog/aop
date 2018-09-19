@@ -1,5 +1,5 @@
-== Aspect class
-[source, java]
+== Aspect class .aj
+[source, aspectj]
 ----
     public aspect MyAspect { }
 ----

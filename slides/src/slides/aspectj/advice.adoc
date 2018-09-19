@@ -1,15 +1,16 @@
 == Advice
-*before* : 
+
 [source, aspectj]
 ----
-before(): myPointcut() {doSomthing();}
+before(): myPointcut() {startTimer();}
 ----
-*after*
+{nbsp} +
 [source, aspectj]
 ----
-after(): myPointcut() {doSomthing();}
+after(): myPointcut() {stopTimer();}
 ----
-*around*
+
+{nbsp} +
 [source, aspectj]
 ----
 around(): myPointcut() {return proceed();}

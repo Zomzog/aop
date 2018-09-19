@@ -1,4 +1,6 @@
 == Spring AOP
+[%notitle]
+=== 0
 [source, xml, numbered]
 ----
         <dependency>

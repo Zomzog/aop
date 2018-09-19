@@ -15,13 +15,13 @@ include::slides/cross-cutting.adoc[]
 
 include::slides/who-can-use-it.adoc[]
 
+include::slides/weaving.adoc[]
+
 include::slides/aspectj/index.adoc[]
 
 include::slides/aspectj-java5/index.adoc[]
 
 include::slides/spring-aop/demo.adoc[]
-
-include::slides/weaving.adoc[]
 
 include::slides/questions.adoc[]
 
