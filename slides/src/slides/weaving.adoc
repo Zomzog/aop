@@ -1,0 +1,13 @@
+== Weaving
+* Compile-Time Weaving
+* Post-Compile Weaving
+* Load-Time Weaving 
+
+[NOTE.speaker]
+--
+Compile-Time : easier when you have source code
+
+Post-Compile: weaving on existing binaries
+
+Load-Time: binary weaving defered until the point that a class loader loads a class file and defines the class to the JVM.
+--

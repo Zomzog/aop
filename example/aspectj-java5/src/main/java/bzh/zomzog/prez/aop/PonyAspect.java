@@ -1,6 +1,5 @@
 package bzh.zomzog.prez.aop;
 
-import bzh.zomzog.prez.aop.domain.Pony;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,12 +16,12 @@ public class PonyAspect {
 
 
     @Before("slowAnnotation()")
-    public void sout(JoinPoint joinPoint) {
+    public void beforeAnnotation(JoinPoint joinPoint) {
         System.out.println("Annotation : " + joinPoint + " for " + joinPoint.getTarget());
     }
 
     @Before("callMakeItWalk()")
-    public void sout2(JoinPoint joinPoint) {
+    public void beforeExecution(JoinPoint joinPoint) {
         System.out.println("Excecution : " + joinPoint + " for " + joinPoint.getTarget());
     }
 

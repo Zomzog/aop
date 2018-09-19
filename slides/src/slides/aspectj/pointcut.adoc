@@ -1,0 +1,21 @@
+== Pointcut
+[source, java]
+----
+    execution(void Point.setX(int)) // method body executed
+----
+[source, java]
+----
+    call(void Point.setX(int))  // method is called
+----
+[source, java]
+----
+    handler(ArrayOutOfBoundsException)  // exception handler
+----
+[source, java]
+----
+    within(MyClass)  // executing code belongs to class MyClass
+----
+[source, java]
+----
+    this, target, cflow, setter...
+----

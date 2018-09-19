@@ -1,0 +1,24 @@
+== Spring AOP
+[source, xml, numbered]
+----
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+----
+[%notitle]
+=== 1
+[source, java, numbered]
+----
+@Configuration
+@EnableAspectJAutoProxy
+public class AopConfiguration {
+
+    @Bean
+    @Profile("verbose")
+    public LoggingAspect loggingAspect() {
+        return new LoggingAspect();
+    }
+}
+
+----

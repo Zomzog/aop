@@ -1,4 +1,4 @@
-package bzh.zomzog.prez.aop;
+package bzh.zomzog.prez.aop.domain;
 
 
 public class Pony {

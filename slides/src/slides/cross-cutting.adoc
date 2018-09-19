@@ -1,0 +1,13 @@
+== Cross-cutting Examples
+
+[%step]
+* Caching
+* Logging
+* Monitoring
+* Transaction processing
+
+[NOTE.speaker]
+--
+Cross-cutting concerns are parts of a program that rely on or must affect many other parts of the system
+Actually things aren't that bad
+--

@@ -1,0 +1,5 @@
+== Aspect class
+[source, java]
+----
+    public aspect MyAspect { }
+----

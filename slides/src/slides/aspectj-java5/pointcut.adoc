@@ -1,0 +1,11 @@
+== Pointcut with *java 5*
+[source, java]
+----
+    @Pointcut("execution( ... )")
+    public void myExecutionPointcut() { }
+----
+[source, java]
+----
+    @Pointcut("@within( AnotherAnnotation )")
+    public void myWithinAnnotationPointcut() { }
+----

@@ -1,0 +1,6 @@
+== AspectJ with *java 5*
+[source, java]
+----
+    @Aspect 
+    public class MyAspect { }
+----

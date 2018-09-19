@@ -1,0 +1,16 @@
+== Advice
+*before* : 
+[source, aspectj]
+----
+before(): myPointcut() {doSomthing();}
+----
+*after*
+[source, aspectj]
+----
+after(): myPointcut() {doSomthing();}
+----
+*around*
+[source, aspectj]
+----
+around(): myPointcut() {return proceed();}
+----

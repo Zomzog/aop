@@ -1,0 +1,12 @@
+== Who can use it ? Nearly eveybody
+
+[%step]
+* AspectJ (Java)
+* PostSharp (.NET)
+* AspectCobol
+* ...
+
+[NOTE.speaker]
+--
+And we will see AspectJ
+--

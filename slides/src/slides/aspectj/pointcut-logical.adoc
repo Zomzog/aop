@@ -1,0 +1,21 @@
+== Pointcut logical
+Single Pointcut
+[source, aspectj]
+----
+    after: myPointcut() {}
+----
+Joint Pointcuts
+[source, aspectj]
+----
+    after: myPointcut() || otherPointcut() {}
+----
+Inline Pointcut
+[source, aspectj]
+----
+    after: myPointcut() && otherPointcut() {}
+----
+Parameterized Pointcut
+[source, aspectj]
+----
+    after(String s): myPointcut(s) {}   
+----

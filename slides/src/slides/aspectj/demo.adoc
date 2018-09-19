@@ -1,0 +1,84 @@
+== Demo .aj
+
+[%notitle]
+=== 1
+[source, xml, numbered]
+----
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>aspectj-maven-plugin</artifactId>
+    <version>${aspectj-plugin}</version>
+</plugin>
+----
+[%notitle]
+=== 2
+[source, java, numbered]
+----
+// Pony.java
+package bzh.zomzog.prez.aop;
+
+public class Pony {
+    private int distance = 0;
+
+    public boolean makeItWalk(int distance){
+        this.distance += distance;
+        return true;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}
+----
+[%notitle]
+=== 3
+[source, java, numbered]
+----
+// PonyAspect.aj
+package bzh.zomzog.prez.aop;
+
+public aspect PonyAspect {
+
+    pointcut callMakeItWalk(int distance, Pony pony) :
+            call(boolean Pony.makeItWalk(int)) 
+            && args(distance) 
+            && target(pony);
+}
+----
+[%notitle]
+=== 4
+[source, java, numbered]
+----
+before(int distance, Pony pony) : callMakeItWalk(distance, pony) {
+    if (distance > 10) {
+        throw new RuntimeException("Too long for a pony");
+    }
+}
+
+after(int distance, Pony pony) : callMakeItWalk(distance, pony) {
+    System.out.println("After " + pony);
+}
+----
+[%notitle]
+=== 5
+[source, java, numbered]
+----
+boolean around(int distance, Pony pony) 
+        : callMakeItWalk(distance, pony) {
+    long startTime = System.nanoTime();
+    boolean result = proceed(distance, pony);
+    long endTime = System.nanoTime();
+    System.out.println("Duration : " + (endTime-startTime));
+    return result;
+}
+----

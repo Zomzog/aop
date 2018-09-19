@@ -1,0 +1,113 @@
+== Demo java-5
+
+[%notitle]
+=== 1
+[source, xml, numbered]
+----
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>${aspectj}</version>
+</dependency>
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>aspectj-maven-plugin</artifactId>
+    <version>${aspectj-plugin}</version>
+</plugin>
+----
+[%notitle]
+=== 2
+[source, java, numbered]
+----
+// Pony.java
+package bzh.zomzog.prez.aop;
+
+public abstract class Pony {
+    private int distance = 0;
+
+    public boolean makeItWalk(int distance){
+        this.distance += distance;
+        return true;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}
+----
+[%notitle]
+=== 2.5
+[source, java, numbered]
+----
+// Unicorn.java
+@Slow
+public class Unicorn extends Pony { }
+
+// Pegasus.java
+public class Pegasus extends Pony { }
+----
+[%notitle]
+=== 3
+[source, java, numbered]
+----
+// PonyAspect.java
+package bzh.zomzog.prez.aop;
+
+@Aspect
+public class PonyAspect {
+
+    @Pointcut("execution(* bzh.zomzog.prez.aop.domain.Pony.makeItWalk(..))")
+    public void callMakeItWalk() { }
+
+    @Pointcut("@within(bzh.zomzog.prez.aop.Slow)")
+    public void slowAnnotation() { }
+}
+----
+[%notitle]
+=== 4
+[source, java, numbered]
+----
+@Before("slowAnnotation()")
+public void beforeAnnotation(JoinPoint joinPoint) {
+    System.out.println("Annotation : " + joinPoint);
+}
+
+@Before("callMakeItWalk()")
+public void beforeExecution(JoinPoint joinPoint) {
+    System.out.println("Excecution : " + joinPoint);
+}
+----
+[%notitle]
+=== 5
+[source, java, numbered]
+----
+@Before("callMakeItWalk() && slowAnnotation()")
+public void slow(JoinPoint joinPoint) {
+    System.out.println("E&&A : " + joinPoint);
+    int distance = (Integer) joinPoint.getArgs()[0];
+    if (distance > 10) {
+        throw new RuntimeException("Distance is too long for a pony");
+    }
+}
+----
+[%notitle]
+=== 6
+[source, java, numbered]
+----
+// new Pegasus().makeItWalk(100);
+Excecution : execution(boolean Pony.makeItWalk(int))
+
+// new Unicorn().makeItWalk(100);
+Annotation : staticinitialization(Unicorn.<clinit>)
+Annotation : preinitialization(Unicorn(String))
+Annotation : initialization(Unicorn(String))
+Annotation : execution(Unicorn(String))
+Annotation : execution(boolean Unicorn.makeItWalk(int))
+Excecution : execution(boolean Unicorn.makeItWalk(int))
+E&&A : execution(boolean Unicorn.makeItWalk(int))
+----

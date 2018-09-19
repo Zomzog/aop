@@ -5,8 +5,9 @@ Reveal.addEventListener( 'dynamic', function() {
     <p>My paragraph</p>
     <p id="myparagraph"><i>Choose a color</i></p>
     <p>
-        <button onclick="document.getElementById('myparagraph').style.color ='red'">Red</button>
-        <button onclick="document.getElementById('myparagraph').style.color ='blue'">Blue</button>
+        <button onclick="document.getElementById('theme').setAttribute('href','css/talend.css')">Talend</button>
+        <button onclick="document.getElementsByTagName('body')[0].style.background ='red'">Red</button>
+        <button onclick="document.getElementsByTagName('body')[0].style.background ='blue'">Blue</button>
     </p>
   `;
 
