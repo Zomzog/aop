@@ -2,11 +2,10 @@
 link.rel = 'stylesheet';
 link.type = 'text/css';
 link.href = window.location.search.match( /print-pdf/gi ) ? "node_modules/reveal.js/css/print/pdf.css" : "node_modules/reveal.js/css/print/paper.css";
-document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="node_modules/reveal.js/lib/js/html5shiv.js"></script><![endif]--></head><body><div class="reveal"><div class="slides"><section id="advice"><h2>Advice</h2><div class="paragraph"><p><strong>before</strong> :</p></div>
-<div class="listingblock"><div class="content"><pre class="highlight"><code class="aspectj language-aspectj">before(): myPointcut() {doSomthing();}</code></pre></div></div>
-<div class="paragraph"><p><strong>after</strong></p></div>
-<div class="listingblock"><div class="content"><pre class="highlight"><code class="aspectj language-aspectj">after(): myPointcut() {doSomthing();}</code></pre></div></div>
-<div class="paragraph"><p><strong>around</strong></p></div>
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="node_modules/reveal.js/lib/js/html5shiv.js"></script><![endif]--></head><body><div class="reveal"><div class="slides"><section id="advice"><h2>Advice</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="aspectj language-aspectj">before(): myPointcut() {startTimer();}</code></pre></div></div>
+<div class="paragraph"><p>&#160;<br></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="aspectj language-aspectj">after(): myPointcut() {stopTimer();}</code></pre></div></div>
+<div class="paragraph"><p>&#160;<br></p></div>
 <div class="listingblock"><div class="content"><pre class="highlight"><code class="aspectj language-aspectj">around(): myPointcut() {return proceed();}</code></pre></div></div></section></div></div><script src="node_modules/reveal.js/lib/js/head.min.js"></script><script src="node_modules/reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
 Reveal.initialize({
   // Display controls in the bottom right corner
