@@ -1,5 +1,5 @@
 = Aspect Oriented Programming
-(aop for firends)
+(aop for friends)
 :source-highlighter: highlightjs
 :revealjs_theme: league
 :revealjs_progress: true
@@ -24,3 +24,6 @@ include::slides/spring-aop/demo.adoc[]
 include::slides/weaving.adoc[]
 
 include::slides/questions.adoc[]
+
+include::slides/thanks.adoc[]
+

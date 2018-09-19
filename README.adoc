@@ -1,0 +1,7 @@
+image:https://travis-ci.org/Zomzog/aop.svg?branch=master["Build Status", link="https://travis-ci.org/Zomzog/aop"]
+
+== Presentation of Aspect Oriented Programming
+
+Source: /example
+
+Slide: /slides
