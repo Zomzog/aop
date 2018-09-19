@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>AspectJ with java 5</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="node_modules/reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="node_modules/reveal.js/css/theme/black.css" id="theme"><link href="node_modules/reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>var link = document.createElement( 'link' );
+link.rel = 'stylesheet';
+link.type = 'text/css';
+link.href = window.location.search.match( /print-pdf/gi ) ? "node_modules/reveal.js/css/print/pdf.css" : "node_modules/reveal.js/css/print/paper.css";
+document.getElementsByTagName( 'head' )[0].appendChild( link );</script><!--[if lt IE 9]><script src="node_modules/reveal.js/lib/js/html5shiv.js"></script><![endif]--></head><body><div class="reveal"><div class="slides"><section id="aspectj_with_java_5"><h2>AspectJ with <strong>java 5</strong></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @Aspect
+    public class MyAspect { }</code></pre></div></div></section>
+<section id="pointcut_with_java_5"><h2>Pointcut with <strong>java 5</strong></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @Pointcut("execution( ... )")
+    public void myExecutionPointcut() { }</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @Pointcut("@within( AnotherAnnotation )")
+    public void myWithinAnnotationPointcut() { }</code></pre></div></div></section>
+<section id="advice_with_java_5"><h2>Advice with <strong>java 5</strong></h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @Before("myExecutionPointcut()")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @After("myWithinAnnotationPointcut()")</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">    @Around("execution( ... )")</code></pre></div></div></section>
+<section><section id="demo_java_5"><h2>Demo java-5</h2></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="xml language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+    &lt;artifactId&gt;aspectjrt&lt;/artifactId&gt;
+    &lt;version&gt;${aspectj}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.aspectj&lt;/groupId&gt;
+    &lt;artifactId&gt;aspectjweaver&lt;/artifactId&gt;
+    &lt;version&gt;${aspectj}&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;plugin&gt;
+    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+    &lt;artifactId&gt;aspectj-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${aspectj-plugin}&lt;/version&gt;
+&lt;/plugin&gt;</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Pony.java
+package bzh.zomzog.prez.aop;
+
+public abstract class Pony {
+    private int distance = 0;
+
+    public boolean makeItWalk(int distance){
+        this.distance += distance;
+        return true;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+}</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// Unicorn.java
+@Slow
+public class Unicorn extends Pony { }
+
+// Pegasus.java
+public class Pegasus extends Pony { }</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// PonyAspect.java
+package bzh.zomzog.prez.aop;
+
+@Aspect
+public class PonyAspect {
+
+    @Pointcut("execution(* bzh.zomzog.prez.aop.domain.Pony.makeItWalk(..))")
+    public void callMakeItWalk() { }
+
+    @Pointcut("@within(bzh.zomzog.prez.aop.Slow)")
+    public void slowAnnotation() { }
+}</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">@Before("slowAnnotation()")
+public void beforeAnnotation(JoinPoint joinPoint) {
+    System.out.println("Annotation : " + joinPoint);
+}
+
+@Before("callMakeItWalk()")
+public void beforeExecution(JoinPoint joinPoint) {
+    System.out.println("Excecution : " + joinPoint);
+}</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">@Before("callMakeItWalk() &amp;&amp; slowAnnotation()")
+public void slow(JoinPoint joinPoint) {
+    System.out.println("E&amp;&amp;A : " + joinPoint);
+    int distance = (Integer) joinPoint.getArgs()[0];
+    if (distance &gt; 10) {
+        throw new RuntimeException("Distance is too long for a pony");
+    }
+}</code></pre></div></div></section><section id=""><div class="listingblock"><div class="content"><pre class="highlight"><code class="java language-java">// new Pegasus().makeItWalk(100);
+Excecution : execution(boolean Pony.makeItWalk(int))
+
+// new Unicorn().makeItWalk(100);
+Annotation : staticinitialization(Unicorn.&lt;clinit&gt;)
+Annotation : preinitialization(Unicorn(String))
+Annotation : initialization(Unicorn(String))
+Annotation : execution(Unicorn(String))
+Annotation : execution(boolean Unicorn.makeItWalk(int))
+Excecution : execution(boolean Unicorn.makeItWalk(int))
+E&amp;&amp;A : execution(boolean Unicorn.makeItWalk(int))</code></pre></div></div></section></section></div></div><script src="node_modules/reveal.js/lib/js/head.min.js"></script><script src="node_modules/reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Set a per-slide timing for speaker notes, null means none
+  defaultTiming: null,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Randomizes the order of slides each time the presentation loads
+  shuffle: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Flags if we should show a help overlay when the questionmark
+  // key is pressed
+  help: true,
+  // Flags if speaker notes should be visible to all viewers
+  showNotes: false,
+  // Global override for autolaying embedded media (video/audio/iframe)
+  // - null: Media will only autoplay if data-autoplay is present
+  // - true: All media will autoplay, regardless of individual setting
+  // - false: No media will autoplay, regardless of individual setting
+  autoPlayMedia: null,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'black',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'node_modules/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'node_modules/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'node_modules/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'node_modules/reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'node_modules/reveal.js/plugin/notes/notes.js', async: true }
+  ]
+});</script><script src="js/custom.js"></script></html>
