@@ -42,6 +42,11 @@ gulp.task('copy-js', () =>
     .pipe(gulp.dest('build/dist'))
 );
 
+gulp.task('copy-nojekyll', () =>
+  gulp.src('.nojekyll')
+    .pipe(gulp.dest('build/dist'))
+);
+
 gulp.task('serveAndWatch', () => {
   browserSync.init({
     server: {
@@ -69,6 +74,7 @@ gulp.task('default', cb =>
     'copy-css',
     'copy-js',
     'copy-images',
+    'copy-nojekyll',
     cb
   )
 );
